@@ -2,11 +2,11 @@ import { assets, blog_data } from "@/assets/assets";
 import Image from "next/image";
 import React from "react";
 
-const BlogItem = ({ title, category, img, description }) => {
+const BlogItem = ({ title, category, img, description, onClick }) => {
   return (
-    <div className="w-auto border my-3 border-gray-300 rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-200 shadow-black">
+    <div className="w-auto relative border my-3 border-gray-300 rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-200 shadow-black">
       <Image src={img} alt="" width={500} height={500} />
-      <div className="p-6">
+      <div className="p-6 ">
         <p className="text-sm font-medium text-gray-700 mb-2 uppercase tracking-wide">
           {category}
         </p>
@@ -15,8 +15,10 @@ const BlogItem = ({ title, category, img, description }) => {
             {title}
           </h5>
           <p className="text-gray-600 leading-relaxed">{description}</p>
-          <div className="pt-2">
-            <button className="px-6 py-2 border border-gray-900 text-gray-900 font-medium rounded-md hover:bg-gray-900 hover:text-white transition-colors duration-200">
+          <div className="pt-2 my-5">
+            <button
+              onClick={onClick}
+              className="absolute bottom-4 left-6 px-6 cursor-pointer py-2 border border-gray-900 text-gray-900 font-medium rounded-md hover:bg-gray-900 hover:text-white transition-colors duration-200">
               Read more
             </button>
           </div>

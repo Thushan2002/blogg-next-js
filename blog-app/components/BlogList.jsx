@@ -2,9 +2,11 @@
 import { blog_data } from "@/assets/assets";
 import React, { useState } from "react";
 import BlogItem from "./BlogItem";
+import { useRouter } from "next/navigation";
 
 export const BlogList = () => {
   const [category, setCategory] = useState("all");
+  const router = useRouter();
 
   return (
     <div>
@@ -29,6 +31,7 @@ export const BlogList = () => {
           .map((blog, idx) => {
             return (
               <BlogItem
+                onClick={() => router.push(`/blogs/${blog.id}`)}
                 key={idx}
                 title={blog.title}
                 description={blog.description}
