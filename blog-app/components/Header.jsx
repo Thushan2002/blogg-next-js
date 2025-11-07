@@ -9,6 +9,10 @@ const Header = () => {
   const pathName = usePathname();
   const currentPath = pathName.split("/").filter(Boolean).pop() || "";
 
+  if (pathName.includes("admin")) {
+    return;
+  }
+
   return (
     <div className="my-3">
       <div className="flex justify-between items-center">
