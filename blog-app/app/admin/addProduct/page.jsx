@@ -1,7 +1,9 @@
 "use client";
 import { assets } from "@/assets/assets";
+import axios from "axios";
 import Image from "next/image";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 const Page = () => {
   const [image, setImage] = useState(false);
@@ -21,14 +23,30 @@ const Page = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log({
-      ...formData,
-      image: image,
-      date: Date.now(),
-    });
+
+    try {
+      const data = new FormData();
+      data.append("title", formData.title);
+      data.append("description", formData.description);
+      data.append("category", formData.category);
+      data.append("image", image); // 'image' should be a File object (from <input type="file" />)
+
+      const res = await axios.post("/api/blog", data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      console.log(res.data);
+
+      if (res.data.success) {
+        toast.success(res.data.message || "Blog added successfully!");
+      } else {
+        toast.error(res.data.message || "Something went wrong!");
+      }
+    } catch (error) {
+      console.error("Error uploading blog:", error);
+      toast.error("Error uploading blog");
+    }
   };
 
   return (
@@ -62,7 +80,7 @@ const Page = () => {
                     alt="upload-image"
                     width={200}
                     height={200}
-                    className="mb-4 object-cover rounded-lg bg-gray-100"
+                    className="mb-4 object-cover rounded-lg bg-gray-100 w-auto h-auto"
                   />
                   <div className="text-center">
                     <p className="text-gray-700 font-medium mb-1">

@@ -46,7 +46,7 @@ export async function POST(request) {
         }
 
         const newBlog = await Blog.create(blogData)
-        return NextResponse.json({ sucess: true, message: "Blog Created", data: newBlog }, { status: 201 });
+        return NextResponse.json({ success: true, message: "Blog Created", data: newBlog }, { status: 201 });
     } catch (error) {
         console.error("File upload error:", error);
         return NextResponse.json({ error: "Error uploading file" }, { status: 500 });
