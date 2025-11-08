@@ -3,7 +3,19 @@ import Blog from "@/lib/models/blog";
 import { writeFile, mkdir } from "fs/promises";
 import { NextResponse } from "next/server";
 import path from "path";
-import { title } from "process";
+
+
+// POST: create new blog
+export async function GET(request) {
+    try {
+        await connectDB()
+        const blogs = await Blog.find({})
+        return NextResponse.json({ success: true, data: blogs }, { status: 200 })
+    } catch (error) {
+        console.error("Fetchig blogs error:", error);
+        return NextResponse.json({ error: "Fetchig blogs Error" }, { status: 500 });
+    }
+}
 
 // POST: create new blog
 export async function POST(request) {

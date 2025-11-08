@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
         className={outfit.className}
       >
         <div className="p-5 md:px-12 lg:px-24">
-          <Toaster position="-center" />
+          <Toaster position="top-center" />
           <Header />
           {children}
         </div>

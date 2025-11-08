@@ -14,7 +14,9 @@ const BlogItem = ({ title, category, img, description, onClick }) => {
           <h5 className="text-xl font-bold text-gray-900 leading-tight">
             {title}
           </h5>
-          <p className="text-gray-600 leading-relaxed">{description}</p>
+          <p className="text-gray-600 leading-relaxed">
+            {description.slice(0, 70) + "..."}
+          </p>
           <div className="pt-2 my-5">
             <button
               onClick={onClick}
