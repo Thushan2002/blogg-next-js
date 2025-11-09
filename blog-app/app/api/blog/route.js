@@ -82,15 +82,48 @@ export async function DELETE(request) {
 
         const blogId = request.nextUrl.searchParams.get("id");
 
-        if (blogId) {
-            const blog = await Blog.findByIdAndDelete(blogId);
-            if (!blog) {
-                return NextResponse.json({ success: false, error: "Blog not found" }, { status: 404 });
-            }
-            return NextResponse.json({ success: true, message: "Blog Deleted" }, { status: 200 });
+        if (!blogId) {
+            return NextResponse.json(
+                { success: false, error: "Missing blog ID" },
+                { status: 400 }
+            );
         }
+
+        // Find the blog in the database
+        const blog = await Blog.findById(blogId);
+        if (!blog) {
+            return NextResponse.json(
+                { success: false, error: "Blog not found" },
+                { status: 404 }
+            );
+        }
+
+        // Get the image path (stored as `/uploads/filename.jpg`)
+        if (blog.image) {
+            // Resolve full path in the local filesystem
+            const imagePath = path.join(process.cwd(), "public", blog.image);
+
+            try {
+                // Check if file exists before deleting
+                await fs.access(imagePath);
+                await fs.unlink(imagePath);
+            } catch (err) {
+                console.warn("Image not found or already deleted:", imagePath);
+            }
+        }
+
+        // Delete blog from DB
+        await Blog.findByIdAndDelete(blogId);
+
+        return NextResponse.json(
+            { success: true, message: "Blog and image deleted successfully" },
+            { status: 200 }
+        );
     } catch (error) {
         console.error("Deleting blog error:", error);
-        return NextResponse.json({ success: false, error: "Error Deleting blog" }, { status: 500 });
+        return NextResponse.json(
+            { success: false, error: "Error deleting blog" },
+            { status: 500 }
+        );
     }
 }
