@@ -2,10 +2,14 @@
 import { assets } from "@/assets/assets";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React, { useState } from "react";
 
 const Sidebar = () => {
-  const [activeItem, setActiveItem] = useState(0);
+  const location = usePathname();
+  const myPath = location.split("/").pop();
+
+  const [activeItem, setActiveItem] = useState(myPath);
 
   const menuItems = [
     { icon: assets.add_icon, label: "Add Blogs", href: "/admin/addProduct" },
@@ -31,16 +35,16 @@ const Sidebar = () => {
         {menuItems.map((item, index) => (
           <Link href={item.href} key={index}>
             <button
-              onClick={() => setActiveItem(index)}
+              onClick={() => setActiveItem(item.href.split("/").pop())}
               className={`w-full flex items-center gap-3 p-3 rounded-lg transition-all duration-200 cursor-pointer text-left border ${
-                activeItem === index
+                activeItem === item.href.split("/").pop()
                   ? "bg-gray-900 border-gray-900"
                   : "border-transparent hover:bg-gray-50 hover:border-gray-300"
               } group`}>
               {/* Icon Container */}
               <div
                 className={`w-8 h-8 flex items-center justify-center rounded-lg transition-colors duration-200 ${
-                  activeItem === index
+                  activeItem === item.href.split("/").pop()
                     ? "bg-gray-700"
                     : "bg-gray-100 group-hover:bg-gray-200"
                 }`}>
@@ -50,7 +54,7 @@ const Sidebar = () => {
                   width={16}
                   height={16}
                   className={`filter ${
-                    activeItem === index
+                    activeItem === item.href.split("/").pop()
                       ? "grayscale contrast-0 brightness-200"
                       : "grayscale contrast-125"
                   }`}
@@ -60,7 +64,7 @@ const Sidebar = () => {
               {/* Menu Label */}
               <span
                 className={`font-medium transition-colors duration-200 ${
-                  activeItem === index
+                  activeItem === item.href.split("/").pop()
                     ? "text-white"
                     : "text-gray-700 group-hover:text-gray-900"
                 }`}>
