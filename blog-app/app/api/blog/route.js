@@ -74,3 +74,23 @@ export async function POST(request) {
         return NextResponse.json({ success: false, error: "Error uploading file" }, { status: 500 });
     }
 }
+
+// DELETE: Delete single blog by ID
+export async function DELETE(request) {
+    try {
+        await connectDB();
+
+        const blogId = request.nextUrl.searchParams.get("id");
+
+        if (blogId) {
+            const blog = await Blog.findByIdAndDelete(blogId);
+            if (!blog) {
+                return NextResponse.json({ success: false, error: "Blog not found" }, { status: 404 });
+            }
+            return NextResponse.json({ success: true, message: "Blog Deleted" }, { status: 200 });
+        }
+    } catch (error) {
+        console.error("Deleting blog error:", error);
+        return NextResponse.json({ success: false, error: "Error Deleting blog" }, { status: 500 });
+    }
+}

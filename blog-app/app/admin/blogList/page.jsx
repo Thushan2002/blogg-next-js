@@ -35,7 +35,11 @@ const Page = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/blog/${id}`);
+      await axios.delete(`/api/blog`, {
+        params: {
+          id,
+        },
+      });
       setBlogs(blogs.filter((blog) => blog._id !== id));
       toast.success("Blog deleted successfully");
     } catch (error) {
@@ -202,7 +206,7 @@ const Page = () => {
 
                   {/* Author Info */}
                   <div className="flex items-center gap-3 mb-4 pt-4 border-t border-gray-100">
-                    <div className="w-8 h-8 bg-gray-300 rounded-full overflow-hidden flex-shrink-0">
+                    <div className="w-8 h-8 bg-gray-300 rounded-full overflow-hidden">
                       <Image
                         src={blog.author_img || assets.profile_icon}
                         alt={blog.author}
